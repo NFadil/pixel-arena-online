@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Pixel Arena Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#030a09;overflow:hidden;font-family:'Press Start 2P',monospace;color:#e8fff6;user-select:none;-webkit-user-select:none}
+body{display:flex;align-items:center;justify-content:center}
+canvas#c{display:block;image-rendering:pixelated;image-rendering:crisp-edges;background:#050d0b;cursor:crosshair}
+
+/* overlay: menu, lobby, hasil */
+#ov{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(3,10,9,.88);z-index:5;cursor:pointer;padding:16px;overflow:auto}
+#ov h1{font-size:24px;color:#ffd166;text-shadow:3px 3px #000;margin-bottom:14px;line-height:1.3}
+#ov p{font-size:9px;line-height:1.9;color:#b9d9cf;margin:4px 0}
+.sw{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:default;max-width:620px}
+.sw p.nl{color:#6fe3d0;min-height:12px}
+#nm{font:inherit;font-size:10px;text-align:center;text-transform:uppercase;width:240px;padding:10px;background:#07120f;color:#fff;border:3px solid #2e4a40;outline:none}
+#nm:focus{border-color:#6fe3d0}
+.cards{display:flex;gap:14px;margin:6px 0}
+.card{width:180px;padding:10px 8px;background:#07120f;border:3px solid #2e4a40;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px}
+.card:hover{border-color:#4d8a7a}
+.card.on{border-color:#6fe3d0;background:#0b2620;box-shadow:0 0 0 2px #000,0 0 14px #6fe3d055}
+.card canvas{width:96px;height:96px;image-rendering:pixelated}
+.card b{font-size:11px;color:#ffd166}
+.card i{font-style:normal;font-size:7px;color:#c77dff}
+.card span{font-size:7px;line-height:1.8;color:#b9d9cf}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin:6px 0;text-align:left}
+.cr{display:flex;align-items:center;gap:8px}
+.kk{display:flex;align-items:center;gap:2px;min-width:92px}
+.cr em{font-style:normal;font-size:7px;color:#b9d9cf}
+.k{display:inline-block;padding:3px 5px;border:2px solid #6fe3d0;border-radius:3px;font-size:8px;color:#e8fff6;margin-right:2px;background:#07120f}
+.k.on{background:#6fe3d0;color:#030a09}
+.ms{display:inline-block;position:relative;width:12px;height:18px;border:2px solid #6fe3d0;border-radius:6px 6px 7px 7px;background:#07120f}
+.ms::before{content:'';position:absolute;top:0;height:7px;width:50%}
+.ms.l::before{left:0;background:#ffd166}
+.ms.r::before{right:0;background:#ffd166}
+button{font:inherit;font-size:11px;padding:12px 20px;margin-top:6px;background:#6fe3d0;color:#030a09;border:3px solid #000;box-shadow:3px 3px #000;cursor:pointer}
+button:hover{background:#9bf3e4}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px #000}
+#cx{background:#2e4a40;color:#e8fff6}
+
+/* HUD */
+.hud{position:fixed;z-index:3;pointer-events:none;text-shadow:2px 2px #000;font-size:9px}
+.bar{left:14px;width:200px;height:12px;background:rgba(0,0,0,.55);border:2px solid #000;box-shadow:0 0 0 1px #ffffff22}
+.bar i{display:block;height:100%;width:100%}
+.bar::after{content:attr(data-l);position:absolute;left:208px;top:0;font-size:7px;line-height:12px;color:#cfe;white-space:nowrap}
+#hp{bottom:50px}#hp i{background:#e5484d}
+#dc{bottom:32px}#dc i{background:#4fd8f0}
+#sb{bottom:14px}#sb i{background:#c77dff}
+#sc{top:12px;right:14px;color:#ffd166}
+#wv{top:30px;right:14px;color:#6fe3d0}
+#hx{right:14px;bottom:14px;text-align:right;line-height:2;font-size:8px}
+#hx b{font-size:11px;color:#ffd166}
+@media (max-width:640px){#ov h1{font-size:16px}.cards{flex-direction:column}.keys{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ov"></div>
+<div class="hud bar" id="hp" data-l="HP"><i></i></div>
+<div class="hud bar" id="dc" data-l="DASH"><i></i></div>
+<div class="hud bar" id="sb" data-l="SCAN"><i></i></div>
+<div class="hud" id="sc">KILL 0</div>
+<div class="hud" id="wv">HIDUP 0</div>
+<div class="hud" id="hx"></div>
+
+<!-- Jika server game ada di domain lain, isi alamatnya di sini, mis.: window.SERVER_URL = 'https://namaserver.example.com'; -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="shared.js"></script>
+<script src="sprites.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
